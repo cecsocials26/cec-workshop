@@ -35,7 +35,11 @@ export default function Sidebar() {
         <ul className="flex flex-col gap-1">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = item.enabled && pathname === item.href;
+            const isActive =
+              item.enabled &&
+              (item.href === "/"
+                ? pathname === "/"
+                : pathname.startsWith(item.href));
 
             if (!item.enabled) {
               return (
