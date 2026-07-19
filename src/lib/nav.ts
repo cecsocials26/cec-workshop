@@ -21,7 +21,7 @@ export type NavItem = {
 export const navItems: NavItem[] = [
   { label: "Overview", href: "/", icon: LayoutDashboard, enabled: true },
   { label: "Jobs", href: "/jobs", icon: Hammer, enabled: true },
-  { label: "Customers / CRM", href: "/crm", icon: Users, enabled: false },
+  { label: "Customers / CRM", href: "/crm", icon: Users, enabled: true },
   { label: "Payments", href: "/payments", icon: Banknote, enabled: false },
   { label: "Documents", href: "/documents", icon: FileText, enabled: false },
   { label: "Forms", href: "/forms", icon: FileSignature, enabled: false },

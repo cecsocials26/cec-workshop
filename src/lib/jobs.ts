@@ -1,3 +1,5 @@
+import type { Customer } from "@/lib/customers";
+
 export type JobStatus =
   | "quoted"
   | "scheduled"
@@ -8,10 +10,7 @@ export type JobStatus =
 
 export type Job = {
   id: string;
-  customer_name: string;
-  customer_phone: string | null;
-  customer_email: string | null;
-  customer_address: string | null;
+  customer_id: string;
   job_type: string;
   status: JobStatus;
   scheduled_date: string | null;
@@ -19,6 +18,7 @@ export type Job = {
   notes: string | null;
   created_at: string;
   updated_at: string;
+  customer?: Customer;
 };
 
 export const JOB_STATUSES: { value: JobStatus; label: string }[] = [

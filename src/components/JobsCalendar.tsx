@@ -5,7 +5,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import StatusBadge from "@/components/StatusBadge";
 import type { Job } from "@/lib/jobs";
 
-type CalendarJob = Pick<Job, "id" | "customer_name" | "job_type" | "status" | "scheduled_date">;
+type CalendarJob = Pick<Job, "id" | "job_type" | "status" | "scheduled_date"> & {
+  customer: { full_name: string } | null;
+};
 
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -140,7 +142,7 @@ export default function JobsCalendar({ jobs }: { jobs: CalendarJob[] }) {
               <li key={job.id} className="flex items-center justify-between gap-3">
                 <div className="min-w-0">
                   <p className="truncate text-sm text-brand-ivory/90">
-                    {job.customer_name}
+                    {job.customer?.full_name ?? "—"}
                   </p>
                   <p className="truncate text-xs text-brand-ivory/50">
                     {job.job_type}

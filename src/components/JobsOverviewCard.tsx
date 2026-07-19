@@ -40,7 +40,7 @@ export default function JobsOverviewCard({
             <div key={job.id} className="flex items-center justify-between gap-3">
               <div className="min-w-0">
                 <p className="truncate text-sm text-brand-ivory/90">
-                  {job.customer_name}
+                  {job.customer?.full_name ?? "—"}
                 </p>
                 <p className="truncate text-xs text-brand-ivory/50">
                   {job.job_type} &middot; {formatDate(job.scheduled_date)}

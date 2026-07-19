@@ -17,7 +17,7 @@ export default async function Home() {
         .neq("status", "paid"),
       supabase
         .from("jobs")
-        .select("*")
+        .select("*, customer:customers(*)")
         .gte("scheduled_date", today)
         .neq("status", "paid")
         .order("scheduled_date", { ascending: true })
@@ -25,10 +25,12 @@ export default async function Home() {
         .returns<Job[]>(),
       supabase
         .from("jobs")
-        .select("id, customer_name, job_type, status, scheduled_date")
+        .select("id, job_type, status, scheduled_date, customer:customers(full_name)")
         .not("scheduled_date", "is", null)
         .returns<
-          Pick<Job, "id" | "customer_name" | "job_type" | "status" | "scheduled_date">[]
+          (Pick<Job, "id" | "job_type" | "status" | "scheduled_date"> & {
+            customer: { full_name: string } | null;
+          })[]
         >(),
     ]);
 
