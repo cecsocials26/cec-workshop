@@ -1,6 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import {
   LayoutDashboard,
+  ListChecks,
   Hammer,
   Users,
   Banknote,
@@ -20,6 +21,7 @@ export type NavItem = {
 
 export const navItems: NavItem[] = [
   { label: "Overview", href: "/", icon: LayoutDashboard, enabled: true },
+  { label: "Todos", href: "/todos", icon: ListChecks, enabled: true },
   { label: "Jobs", href: "/jobs", icon: Hammer, enabled: true },
   { label: "Customers / CRM", href: "/crm", icon: Users, enabled: true },
   { label: "Payments", href: "/payments", icon: Banknote, enabled: false },
