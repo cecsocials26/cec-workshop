@@ -1,4 +1,5 @@
-import { formatDate, type Job } from "@/lib/jobs";
+import { formatDate, formatPrice, type Job } from "@/lib/jobs";
+import { getPaymentStatus, type Payment } from "@/lib/payments";
 
 export type Alert = {
   id: string;
@@ -8,9 +9,9 @@ export type Alert = {
 
 /**
  * Real quote-expiry alerts derived from Job.quote_expires_at. There is
- * no Marketing or Payments/Invoices data yet, so content-approval and
- * overdue-invoice alerts simply aren't computed — adding those once
- * those modules exist, rather than faking them now.
+ * no Marketing data yet, so content-approval alerts simply aren't
+ * computed — adding those once that module exists, rather than
+ * faking them now.
  */
 export function getQuoteExpiryAlerts(jobs: Job[]): Alert[] {
   const now = new Date();
@@ -31,4 +32,17 @@ export function getQuoteExpiryAlerts(jobs: Job[]): Alert[] {
         href: `/jobs/${j.id}`,
       };
     });
+}
+
+/** Real overdue-invoice alerts derived from Payment.due_date/paid_date. */
+export function getOverduePaymentAlerts(payments: Payment[]): Alert[] {
+  return payments
+    .filter((p) => getPaymentStatus(p) === "overdue")
+    .map((p) => ({
+      id: p.id,
+      message: `Payment of ${formatPrice(p.amount)} from ${
+        p.job?.customer?.full_name ?? "a customer"
+      } is overdue (was due ${formatDate(p.due_date)})`,
+      href: `/payments/${p.id}`,
+    }));
 }

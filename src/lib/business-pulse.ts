@@ -1,4 +1,5 @@
 import { formatPrice, type Job } from "@/lib/jobs";
+import type { Payment } from "@/lib/payments";
 
 export type PulseMetric = {
   label: string;
@@ -23,7 +24,7 @@ function pctChange(current: number, previous: number): number | null {
   return Math.round(((current - previous) / previous) * 100);
 }
 
-function weeklySeries(
+export function weeklySeries(
   points: { date: string; value: number }[],
   weeks = 8,
 ): number[] {
@@ -48,11 +49,15 @@ function conversionRate(list: Job[]): number | null {
 }
 
 /**
- * Everything here is computed from real Jobs rows — no invented figures.
- * "Customer Reviews" has no data source anywhere in the app yet, so it
- * stays a permanent "Not yet tracked" until a reviews mechanism exists.
+ * Everything here is computed from real Jobs/Payments rows — no
+ * invented figures. "Customer Reviews" has no data source anywhere in
+ * the app yet, so it stays a permanent "Not yet tracked" until a
+ * reviews mechanism exists.
  */
-export function computeBusinessPulse(jobs: Job[]): PulseMetric[] {
+export function computeBusinessPulse(
+  jobs: Job[],
+  payments: Payment[],
+): PulseMetric[] {
   const now = new Date();
   const thisMonthStart = startOfMonth(now);
   const lastMonthStart = new Date(
@@ -68,13 +73,13 @@ export function computeBusinessPulse(jobs: Job[]): PulseMetric[] {
     inRange(j.created_at, lastMonthStart, thisMonthStart),
   );
 
-  const paidJobs = jobs.filter((j) => j.status === "paid");
-  const revenueThisMonth = thisMonth
-    .filter((j) => j.status === "paid")
-    .reduce((sum, j) => sum + (j.price ?? 0), 0);
-  const revenueLastMonth = lastMonth
-    .filter((j) => j.status === "paid")
-    .reduce((sum, j) => sum + (j.price ?? 0), 0);
+  const paidPayments = payments.filter((p) => p.paid_date);
+  const revenueThisMonth = paidPayments
+    .filter((p) => inRange(p.paid_date as string, thisMonthStart, now))
+    .reduce((sum, p) => sum + p.amount, 0);
+  const revenueLastMonth = paidPayments
+    .filter((p) => inRange(p.paid_date as string, lastMonthStart, thisMonthStart))
+    .reduce((sum, p) => sum + p.amount, 0);
 
   const completedThisMonth = thisMonth.filter((j) =>
     COMPLETED_STATUSES.has(j.status),
@@ -92,7 +97,7 @@ export function computeBusinessPulse(jobs: Job[]): PulseMetric[] {
       value: formatPrice(revenueThisMonth),
       changePercent: pctChange(revenueThisMonth, revenueLastMonth),
       sparkline: weeklySeries(
-        paidJobs.map((j) => ({ date: j.created_at, value: j.price ?? 0 })),
+        paidPayments.map((p) => ({ date: p.paid_date as string, value: p.amount })),
       ),
     },
     {
