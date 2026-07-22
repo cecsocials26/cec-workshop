@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { JOB_STATUSES, type Job } from "@/lib/jobs";
+import { JOB_STATUSES, SERVICE_CATEGORIES, type Job } from "@/lib/jobs";
 import { customerLabel, type Customer } from "@/lib/customers";
 import { propertyLabel, type Property } from "@/lib/properties";
 
@@ -139,6 +139,24 @@ export default function JobForm({
               defaultValue={job?.job_type}
               className={fieldClass}
             />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className={labelClass} htmlFor="service_category">
+              Service category
+            </label>
+            <select
+              id="service_category"
+              name="service_category"
+              defaultValue={job?.service_category ?? ""}
+              className={fieldClass}
+            >
+              <option value="">Not categorized</option>
+              {SERVICE_CATEGORIES.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="flex flex-col gap-1.5">
             <label className={labelClass} htmlFor="status">

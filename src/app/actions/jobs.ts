@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { resolveOrCreateCustomerId } from "@/lib/customers-server";
-import type { JobStatus } from "@/lib/jobs";
+import type { JobStatus, ServiceCategory } from "@/lib/jobs";
 
 function readJobFields(formData: FormData, customerId: string) {
   const priceRaw = formData.get("price") as string;
@@ -13,11 +13,13 @@ function readJobFields(formData: FormData, customerId: string) {
   const quoteExpiresRaw = formData.get("quote_expires_at") as string;
 
   const propertyIdRaw = formData.get("property_id") as string;
+  const serviceCategoryRaw = formData.get("service_category") as string;
 
   return {
     customer_id: customerId,
     property_id: propertyIdRaw || null,
     job_type: formData.get("job_type") as string,
+    service_category: (serviceCategoryRaw || null) as ServiceCategory | null,
     status: formData.get("status") as JobStatus,
     scheduled_date: scheduledDateRaw || null,
     scheduled_time: scheduledTimeRaw || null,

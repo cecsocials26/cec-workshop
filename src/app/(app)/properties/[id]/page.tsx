@@ -3,7 +3,11 @@ import { createClient } from "@/lib/supabase/server";
 import { updateProperty, deleteProperty } from "@/app/actions/properties";
 import type { Property } from "@/lib/properties";
 import type { Customer } from "@/lib/customers";
+import type { ServiceCategory } from "@/lib/jobs";
+import ServiceStamps from "@/components/ServiceStamps";
 import PropertyForm from "../PropertyForm";
+
+const COMPLETED_STATUSES = ["completed", "invoiced", "paid"];
 
 export default async function EditPropertyPage({
   params,
@@ -13,20 +17,32 @@ export default async function EditPropertyPage({
   const { id } = await params;
   const supabase = await createClient();
 
-  const [{ data: property }, { data: customers }] = await Promise.all([
-    supabase
-      .from("properties")
-      .select("*, customer:customers(*)")
-      .eq("id", id)
-      .maybeSingle<Property>(),
-    supabase
-      .from("customers")
-      .select("*")
-      .order("full_name", { ascending: true })
-      .returns<Customer[]>(),
-  ]);
+  const [{ data: property }, { data: customers }, { data: completedJobs }] =
+    await Promise.all([
+      supabase
+        .from("properties")
+        .select("*, customer:customers(*)")
+        .eq("id", id)
+        .maybeSingle<Property>(),
+      supabase
+        .from("customers")
+        .select("*")
+        .order("full_name", { ascending: true })
+        .returns<Customer[]>(),
+      supabase
+        .from("jobs")
+        .select("service_category")
+        .eq("property_id", id)
+        .in("status", COMPLETED_STATUSES)
+        .not("service_category", "is", null)
+        .returns<{ service_category: ServiceCategory }[]>(),
+    ]);
 
   if (!property) notFound();
+
+  const collectedStamps = Array.from(
+    new Set((completedJobs ?? []).map((j) => j.service_category)),
+  );
 
   const updatePropertyWithId = updateProperty.bind(null, property.id);
   const deletePropertyWithId = deleteProperty.bind(null, property.id);
@@ -50,6 +66,13 @@ export default async function EditPropertyPage({
             Delete property
           </button>
         </form>
+      </div>
+
+      <div className="surface-static max-w-3xl rounded-sm border border-brand-gold/20 bg-brand-green-light/20 px-6 py-6">
+        <p className="mb-5 text-[11px] uppercase tracking-[0.18em] text-brand-ivory/55">
+          Service stamps
+        </p>
+        <ServiceStamps collected={collectedStamps} />
       </div>
 
       <div className="surface-static max-w-2xl rounded-sm border border-brand-gold/20 bg-brand-green-light/20 px-6 py-6">

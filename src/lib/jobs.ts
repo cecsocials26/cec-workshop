@@ -9,11 +9,25 @@ export type JobStatus =
   | "invoiced"
   | "paid";
 
+export const SERVICE_CATEGORIES = [
+  "Roof Care",
+  "Gutter Care",
+  "Render & Soft Washing",
+  "Solar Panel Cleaning",
+  "Driveways & Patios",
+  "Window Cleaning",
+  "Garden Maintenance",
+  "Commercial Exterior Care",
+] as const;
+
+export type ServiceCategory = (typeof SERVICE_CATEGORIES)[number];
+
 export type Job = {
   id: string;
   customer_id: string;
   property_id: string | null;
   job_type: string;
+  service_category: ServiceCategory | null;
   status: JobStatus;
   scheduled_date: string | null;
   scheduled_time: string | null;
