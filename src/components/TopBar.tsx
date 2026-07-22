@@ -17,12 +17,12 @@ export default function TopBar({ user }: { user: User | null }) {
   const initial = name.charAt(0).toUpperCase();
 
   return (
-    <header className="flex items-center justify-between border-b border-brand-gold/20 bg-brand-green px-8 py-5">
+    <header className="flex items-center justify-between border-b border-brand-gold/20 bg-gradient-to-b from-brand-green-light/50 to-brand-green px-8 py-5">
       <div>
         <h1 className="font-heading text-2xl tracking-wide text-brand-ivory">
           {getGreeting()}, {name}.
         </h1>
-        <p className="mt-0.5 text-xs uppercase tracking-[0.15em] text-brand-ivory/50">
+        <p className="mt-1.5 text-xs uppercase tracking-[0.15em] text-brand-ivory/50">
           {today}
         </p>
       </div>
@@ -46,7 +46,7 @@ export default function TopBar({ user }: { user: User | null }) {
           <form action={signOut}>
             <button
               type="submit"
-              className="flex items-center gap-1.5 rounded-sm border border-brand-gold/25 px-3 py-1.5 text-xs uppercase tracking-wider text-brand-ivory/60 transition-colors hover:border-brand-gold/50 hover:text-brand-gold-soft"
+              className="press flex items-center gap-1.5 rounded-sm border border-brand-gold/25 px-3 py-1.5 text-xs uppercase tracking-wider text-brand-ivory/60 transition-all duration-200 ease-out hover:border-brand-gold/50 hover:text-brand-gold-soft"
             >
               <LogOut size={13} strokeWidth={1.5} />
               Sign out

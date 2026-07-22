@@ -6,6 +6,7 @@ import {
   CloudSnow,
   CloudLightning,
   Sun,
+  Wind,
 } from "lucide-react";
 import { getGreeting } from "@/lib/greeting";
 import type { WeatherSnapshot, ServiceRecommendation } from "@/lib/weather";
@@ -38,7 +39,7 @@ export default function WeatherCard({
   });
 
   return (
-    <div className="flex w-full flex-col gap-4 rounded-sm border border-brand-gold/25 bg-brand-green-light/40 px-6 py-5 sm:max-w-sm">
+    <div className="surface-card flex w-full flex-col gap-4 rounded-sm border border-brand-gold/25 bg-brand-green-light/40 px-6 py-5 sm:max-w-sm">
       <div>
         <p className="font-heading text-lg text-brand-ivory">{getGreeting()}</p>
         <p className="text-xs uppercase tracking-wider text-brand-ivory/45">
@@ -65,6 +66,13 @@ export default function WeatherCard({
               ? `Rain likely around ${weather.rainSoon.at} (${weather.rainSoon.probability}%)`
               : "No rain expected in the next few hours."}
           </p>
+
+          {weather.isWindy && (
+            <p className="flex items-center gap-1.5 text-xs text-brand-gold-soft">
+              <Wind size={13} strokeWidth={1.5} />
+              Windy — {weather.windKph}km/h
+            </p>
+          )}
 
           <div className="flex flex-col gap-2 border-t border-brand-gold/15 pt-3">
             <p className="text-[11px] uppercase tracking-[0.15em] text-brand-ivory/45">

@@ -8,6 +8,8 @@ export type WeatherSnapshot = {
   conditionLabel: string;
   isRainingNow: boolean;
   isStormy: boolean;
+  windKph: number;
+  isWindy: boolean;
   rainSoon: { at: string; probability: number } | null;
 };
 
@@ -36,7 +38,7 @@ export async function getWeatherSnapshot(): Promise<WeatherSnapshot | null> {
     const url =
       `https://api.open-meteo.com/v1/forecast` +
       `?latitude=${LATITUDE}&longitude=${LONGITUDE}` +
-      `&current=temperature_2m,precipitation,weather_code` +
+      `&current=temperature_2m,precipitation,weather_code,wind_speed_10m` +
       `&hourly=precipitation_probability` +
       `&timezone=Europe%2FLondon&forecast_days=1`;
 
@@ -67,12 +69,16 @@ export async function getWeatherSnapshot(): Promise<WeatherSnapshot | null> {
       }
     }
 
+    const windKph: number = data.current.wind_speed_10m;
+
     return {
       tempC: Math.round(data.current.temperature_2m),
       conditionCode: currentCode,
       conditionLabel: describeWeatherCode(currentCode),
       isRainingNow: currentPrecip > 0,
       isStormy: currentCode >= 95,
+      windKph: Math.round(windKph),
+      isWindy: windKph >= 30,
       rainSoon,
     };
   } catch {
@@ -94,19 +100,23 @@ export function getServiceRecommendations(
   return [
     {
       category: "Roof & Soft Washing",
-      action: wetNow || rainWithinHours ? "delay" : "proceed",
-      reason: wetNow
-        ? "Currently wet — treatments need a dry surface to bond."
-        : rainWithinHours
-          ? `Rain expected around ${weather.rainSoon?.at} — won't have time to cure.`
-          : "Dry conditions expected — safe to treat.",
+      action: wetNow || rainWithinHours || weather.isWindy ? "delay" : "proceed",
+      reason: weather.isWindy
+        ? `Wind at ${weather.windKph}km/h — unsafe for roof access.`
+        : wetNow
+          ? "Currently wet — treatments need a dry surface to bond."
+          : rainWithinHours
+            ? `Rain expected around ${weather.rainSoon?.at} — won't have time to cure.`
+            : "Dry conditions expected — safe to treat.",
     },
     {
       category: "Gutter Clearing",
-      action: weather.isStormy ? "delay" : "proceed",
-      reason: weather.isStormy
-        ? "Thunderstorm risk — not safe for ladder work."
-        : "Light rain doesn't stop gutter clearing.",
+      action: weather.isStormy || weather.isWindy ? "delay" : "proceed",
+      reason: weather.isWindy
+        ? `Wind at ${weather.windKph}km/h — not safe for ladder work.`
+        : weather.isStormy
+          ? "Thunderstorm risk — not safe for ladder work."
+          : "Light rain doesn't stop gutter clearing.",
     },
     {
       category: "Window Cleaning",
@@ -125,10 +135,12 @@ export function getServiceRecommendations(
     },
     {
       category: "Solar Panel Cleaning",
-      action: wetNow ? "delay" : "proceed",
-      reason: wetNow
-        ? "Wet panels/roof access isn't safe in current conditions."
-        : "Dry and safe for roof access.",
+      action: wetNow || weather.isWindy ? "delay" : "proceed",
+      reason: weather.isWindy
+        ? `Wind at ${weather.windKph}km/h — unsafe for roof access.`
+        : wetNow
+          ? "Wet panels/roof access isn't safe in current conditions."
+          : "Dry and safe for roof access.",
     },
   ];
 }

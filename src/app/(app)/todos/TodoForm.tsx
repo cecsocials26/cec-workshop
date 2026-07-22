@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ASSIGNED_TO_OPTIONS, TODO_CATEGORIES, type Todo } from "@/lib/todos";
 
 const fieldClass =
-  "rounded-sm border border-brand-gold/25 bg-brand-green-dark/60 px-4 py-2.5 text-sm text-brand-ivory placeholder:text-brand-ivory/30 outline-none transition-colors focus:border-brand-gold/60";
+  "rounded-sm border border-brand-gold/25 bg-brand-green-dark/60 px-4 py-2.5 text-sm text-brand-ivory placeholder:text-brand-ivory/30 outline-none transition-colors duration-200 ease-out focus:border-brand-gold/60";
 
 const labelClass = "text-[11px] uppercase tracking-[0.15em] text-brand-ivory/55";
 
@@ -121,7 +121,7 @@ export default function TodoForm({
 
       <button
         type="submit"
-        className="self-start rounded-sm bg-brand-gold px-6 py-2.5 text-sm font-medium uppercase tracking-[0.15em] text-brand-green-dark transition-colors hover:bg-brand-gold-soft"
+        className="press self-start rounded-sm bg-brand-gold px-6 py-2.5 text-sm font-medium uppercase tracking-[0.15em] text-brand-green-dark transition-all duration-200 ease-out hover:bg-brand-gold-soft"
       >
         {submitLabel}
       </button>

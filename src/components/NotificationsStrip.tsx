@@ -13,12 +13,12 @@ export default function NotificationsStrip({ alerts }: { alerts: Alert[] }) {
   }
 
   return (
-    <div className="flex flex-col gap-2 rounded-sm border border-brand-gold/25 bg-brand-green-light/40 px-4 py-3">
+    <div className="surface-static flex flex-col gap-2 rounded-sm border border-brand-gold/25 bg-brand-green-light/40 px-4 py-3">
       {alerts.map((alert) => (
         <Link
           key={alert.id}
           href={alert.href}
-          className="flex items-center gap-2 text-sm text-brand-gold-soft hover:text-brand-gold"
+          className="flex items-center gap-2 text-sm text-brand-gold-soft transition-colors duration-200 ease-out hover:text-brand-gold"
         >
           <AlertTriangle size={14} strokeWidth={1.5} />
           {alert.message}

@@ -33,14 +33,14 @@ export default async function EditCustomerPage({
         <form action={deleteCustomerWithId}>
           <button
             type="submit"
-            className="rounded-sm border border-brand-gold/25 px-4 py-2 text-xs uppercase tracking-wider text-brand-ivory/50 transition-colors hover:border-brand-gold/50 hover:text-brand-gold-soft"
+            className="press rounded-sm border border-brand-gold/25 px-4 py-2 text-xs uppercase tracking-wider text-brand-ivory/50 transition-all duration-200 ease-out hover:border-brand-gold/50 hover:text-brand-gold-soft"
           >
             Delete customer
           </button>
         </form>
       </div>
 
-      <div className="max-w-2xl rounded-sm border border-brand-gold/20 bg-brand-green-light/20 px-6 py-6">
+      <div className="surface-static max-w-2xl rounded-sm border border-brand-gold/20 bg-brand-green-light/20 px-6 py-6">
         <CustomerForm
           action={updateCustomerWithId}
           customer={customer}

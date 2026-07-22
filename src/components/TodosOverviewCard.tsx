@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ListChecks } from "lucide-react";
+import { ListChecks, CheckCircle2 } from "lucide-react";
 import AssignedBadge from "@/components/AssignedBadge";
 import { formatDueDate, isOverdue, type Todo } from "@/lib/todos";
 
@@ -13,7 +13,7 @@ export default function TodosOverviewCard({
   return (
     <Link
       href="/todos"
-      className="flex h-full flex-col gap-5 rounded-sm border border-brand-gold/25 bg-brand-green-light/40 px-6 py-6 transition-colors hover:border-brand-gold/50"
+      className="surface-card flex h-full flex-col gap-5 rounded-sm border border-brand-gold/25 bg-brand-green-light/40 px-6 py-6 hover:border-brand-gold/50"
     >
       <div className="flex items-center justify-between">
         <span className="text-[11px] uppercase tracking-[0.18em] text-brand-ivory/55">
@@ -32,7 +32,10 @@ export default function TodosOverviewCard({
           Needs attention
         </p>
         {preview.length === 0 ? (
-          <p className="text-sm text-brand-ivory/40">All clear.</p>
+          <p className="flex items-center gap-2 text-sm text-brand-ivory/40">
+            <CheckCircle2 size={16} strokeWidth={1.25} className="shrink-0 text-brand-ivory/20" />
+            All clear.
+          </p>
         ) : (
           preview.map((todo) => {
             const dueLabel = formatDueDate(todo.due_date);

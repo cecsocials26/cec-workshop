@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CheckCircle2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import {
   TODO_CATEGORIES,
@@ -48,20 +49,20 @@ export default async function TodosPage({
           <h2 className="font-heading text-3xl tracking-wide text-brand-ivory">
             Todos
           </h2>
-          <p className="mt-1 text-sm text-brand-ivory/50">
+          <p className="mt-2 text-sm text-brand-ivory/50">
             Shared admin and one-off actions, separate from the Jobs pipeline.
           </p>
         </div>
         <div className="flex items-center gap-3">
           <Link
             href={showCompleted ? "/todos" : "/todos?completed=1"}
-            className="rounded-sm border border-brand-gold/25 px-4 py-2.5 text-xs uppercase tracking-wider text-brand-ivory/50 transition-colors hover:border-brand-gold/50 hover:text-brand-gold-soft"
+            className="press rounded-sm border border-brand-gold/25 px-4 py-2.5 text-xs uppercase tracking-wider text-brand-ivory/50 transition-all duration-200 ease-out hover:border-brand-gold/50 hover:text-brand-gold-soft"
           >
             {showCompleted ? "Hide completed" : "Show completed"}
           </Link>
           <Link
             href="/todos/new"
-            className="rounded-sm bg-brand-gold px-5 py-2.5 text-sm font-medium uppercase tracking-[0.15em] text-brand-green-dark transition-colors hover:bg-brand-gold-soft"
+            className="press rounded-sm bg-brand-gold px-5 py-2.5 text-sm font-medium uppercase tracking-[0.15em] text-brand-green-dark transition-all duration-200 ease-out hover:bg-brand-gold-soft"
           >
             New todo
           </Link>
@@ -75,7 +76,8 @@ export default async function TodosPage({
       )}
 
       {!error && grouped.length === 0 && (
-        <p className="rounded-sm border border-brand-gold/20 bg-brand-green-dark/40 px-4 py-3 text-sm text-brand-ivory/60">
+        <p className="flex items-center gap-2 rounded-sm border border-brand-gold/20 bg-brand-green-dark/40 px-4 py-3 text-sm text-brand-ivory/60">
+          <CheckCircle2 size={18} strokeWidth={1.25} className="shrink-0 text-brand-ivory/25" />
           {showCompleted ? "No todos yet." : "Nothing outstanding — nice work."}
         </p>
       )}
@@ -84,7 +86,7 @@ export default async function TodosPage({
         {grouped.map(({ category, items }) => (
           <section
             key={category}
-            className="rounded-sm border border-brand-gold/20 bg-brand-green-light/20"
+            className="surface-static rounded-sm border border-brand-gold/20 bg-brand-green-light/20"
           >
             <div className="border-b border-brand-gold/15 px-5 py-3">
               <h3 className="font-heading text-lg text-brand-gold-soft">
@@ -102,7 +104,7 @@ export default async function TodosPage({
                 return (
                   <li
                     key={todo.id}
-                    className="flex items-center gap-3 px-5 py-3 hover:bg-brand-gold/5"
+                    className="flex items-center gap-3 px-5 py-3 transition-colors duration-200 ease-out hover:bg-brand-gold/5"
                   >
                     <TodoCheckbox id={todo.id} done={todo.done} />
                     <Link

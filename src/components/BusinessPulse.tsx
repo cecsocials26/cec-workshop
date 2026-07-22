@@ -1,3 +1,4 @@
+import { Leaf } from "lucide-react";
 import Sparkline from "@/components/Sparkline";
 import type { PulseMetric } from "@/lib/business-pulse";
 
@@ -18,7 +19,7 @@ function ChangeBadge({ changePercent }: { changePercent: number | null }) {
 
 export default function BusinessPulse({ metrics }: { metrics: PulseMetric[] }) {
   return (
-    <div className="rounded-sm border border-brand-gold/25 bg-brand-green-light/40 px-6 py-6">
+    <div className="surface-card rounded-sm border border-brand-gold/25 bg-brand-green-light/40 px-6 py-6">
       <p className="mb-5 text-[11px] uppercase tracking-[0.18em] text-brand-ivory/55">
         Business pulse
       </p>
@@ -29,9 +30,12 @@ export default function BusinessPulse({ metrics }: { metrics: PulseMetric[] }) {
               {m.label}
             </p>
             {m.value === "Not yet tracked" ? (
-              <p className="font-heading text-lg italic text-brand-ivory/60">
-                Not yet tracked
-              </p>
+              <div className="flex items-center gap-2">
+                <Leaf size={18} strokeWidth={1.25} className="shrink-0 text-brand-ivory/20" />
+                <p className="font-heading text-lg italic text-brand-ivory/50">
+                  Not yet tracked
+                </p>
+              </div>
             ) : (
               <>
                 <p className="font-heading text-2xl text-brand-ivory">{m.value}</p>

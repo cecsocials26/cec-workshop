@@ -7,6 +7,11 @@
   --color-brand-gold: #c9a227;
   --color-brand-gold-soft: #d9bd63;
   --color-brand-ivory: #f6f1e7;
+
+  --shadow-card:
+    0 1px 2px rgba(4, 20, 15, 0.35), 0 6px 20px -4px rgba(4, 20, 15, 0.45);
+  --shadow-card-hover:
+    0 2px 4px rgba(4, 20, 15, 0.4), 0 12px 28px -6px rgba(4, 20, 15, 0.55);
 }
 
 @theme inline {
@@ -28,4 +33,33 @@ body {
 
 * {
   border-color: color-mix(in srgb, var(--color-brand-gold) 25%, transparent);
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+}
+
+@layer components {
+  .surface-card {
+    box-shadow: var(--shadow-card);
+    transition:
+      transform 250ms ease-out,
+      box-shadow 250ms ease-out,
+      border-color 250ms ease-out;
+  }
+
+  .surface-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .press:active {
+    transform: translateY(1px) scale(0.98);
+  }
+
+  .surface-static {
+    box-shadow: var(--shadow-card);
+  }
 }

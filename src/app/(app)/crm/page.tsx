@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Users } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import type { Customer } from "@/lib/customers";
 
@@ -17,13 +18,13 @@ export default async function CrmPage() {
           <h2 className="font-heading text-3xl tracking-wide text-brand-ivory">
             Customers
           </h2>
-          <p className="mt-1 text-sm text-brand-ivory/50">
+          <p className="mt-2 text-sm text-brand-ivory/50">
             Every customer on file.
           </p>
         </div>
         <Link
           href="/crm/new"
-          className="rounded-sm bg-brand-gold px-5 py-2.5 text-sm font-medium uppercase tracking-[0.15em] text-brand-green-dark transition-colors hover:bg-brand-gold-soft"
+          className="press rounded-sm bg-brand-gold px-5 py-2.5 text-sm font-medium uppercase tracking-[0.15em] text-brand-green-dark transition-all duration-200 ease-out hover:bg-brand-gold-soft"
         >
           New customer
         </Link>
@@ -36,13 +37,14 @@ export default async function CrmPage() {
       )}
 
       {!error && customers?.length === 0 && (
-        <p className="rounded-sm border border-brand-gold/20 bg-brand-green-dark/40 px-4 py-3 text-sm text-brand-ivory/60">
+        <p className="flex items-center gap-2 rounded-sm border border-brand-gold/20 bg-brand-green-dark/40 px-4 py-3 text-sm text-brand-ivory/60">
+          <Users size={18} strokeWidth={1.25} className="shrink-0 text-brand-ivory/25" />
           No customers yet. Add the first one to get started.
         </p>
       )}
 
       {!error && customers && customers.length > 0 && (
-        <div className="overflow-x-auto rounded-sm border border-brand-gold/20">
+        <div className="surface-static overflow-x-auto rounded-sm border border-brand-gold/20">
           <table className="w-full min-w-[640px] text-left text-sm">
             <thead>
               <tr className="border-b border-brand-gold/20 text-[11px] uppercase tracking-wider text-brand-ivory/50">
@@ -56,7 +58,7 @@ export default async function CrmPage() {
               {customers.map((customer) => (
                 <tr
                   key={customer.id}
-                  className="border-b border-brand-gold/10 last:border-0 hover:bg-brand-gold/5"
+                  className="border-b border-brand-gold/10 transition-colors duration-200 ease-out last:border-0 hover:bg-brand-gold/5"
                 >
                   <td className="px-4 py-3">
                     <Link

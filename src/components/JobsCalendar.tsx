@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, CalendarX } from "lucide-react";
 import StatusBadge from "@/components/StatusBadge";
 import type { Job } from "@/lib/jobs";
 
@@ -61,14 +61,14 @@ export default function JobsCalendar({ jobs }: { jobs: CalendarJob[] }) {
   const selectedJobs = selectedKey ? (jobsByDate.get(selectedKey) ?? []) : [];
 
   return (
-    <div className="flex h-full flex-col rounded-sm border border-brand-gold/25 bg-brand-green-light/40 px-6 py-6">
+    <div className="surface-card flex h-full flex-col rounded-sm border border-brand-gold/25 bg-brand-green-light/40 px-6 py-6">
       <div className="flex items-center justify-between">
         <h3 className="font-heading text-xl text-brand-ivory">{monthLabel}</h3>
         <div className="flex items-center gap-1">
           <button
             type="button"
             onClick={() => setViewDate(new Date(year, month - 1, 1))}
-            className="rounded-sm p-1.5 text-brand-ivory/50 transition-colors hover:text-brand-gold-soft"
+            className="press rounded-sm p-1.5 text-brand-ivory/50 transition-colors duration-200 ease-out hover:text-brand-gold-soft"
             aria-label="Previous month"
           >
             <ChevronLeft size={16} />
@@ -76,7 +76,7 @@ export default function JobsCalendar({ jobs }: { jobs: CalendarJob[] }) {
           <button
             type="button"
             onClick={() => setViewDate(new Date(year, month + 1, 1))}
-            className="rounded-sm p-1.5 text-brand-ivory/50 transition-colors hover:text-brand-gold-soft"
+            className="press rounded-sm p-1.5 text-brand-ivory/50 transition-colors duration-200 ease-out hover:text-brand-gold-soft"
             aria-label="Next month"
           >
             <ChevronRight size={16} />
@@ -105,7 +105,7 @@ export default function JobsCalendar({ jobs }: { jobs: CalendarJob[] }) {
               type="button"
               key={key}
               onClick={() => setSelectedKey(key)}
-              className={`flex flex-col items-center gap-0.5 rounded-sm py-1.5 text-sm transition-colors ${
+              className={`press flex flex-col items-center gap-0.5 rounded-sm py-1.5 text-sm transition-colors duration-200 ease-out ${
                 isSelected
                   ? "bg-brand-gold text-brand-green-dark"
                   : inMonth
@@ -135,7 +135,10 @@ export default function JobsCalendar({ jobs }: { jobs: CalendarJob[] }) {
             : "Select a date"}
         </p>
         {selectedJobs.length === 0 ? (
-          <p className="mt-2 text-sm text-brand-ivory/40">Nothing scheduled.</p>
+          <p className="mt-2 flex items-center gap-2 text-sm text-brand-ivory/40">
+            <CalendarX size={16} strokeWidth={1.25} className="shrink-0 text-brand-ivory/20" />
+            Nothing scheduled.
+          </p>
         ) : (
           <ul className="mt-2 flex flex-col gap-2">
             {selectedJobs.map((job) => (

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ClipboardList } from "lucide-react";
+import { ClipboardList, CalendarX } from "lucide-react";
 import StatusBadge from "@/components/StatusBadge";
 import Sparkline from "@/components/Sparkline";
 import { formatDate, type Job } from "@/lib/jobs";
@@ -16,7 +16,7 @@ export default function JobsOverviewCard({
   return (
     <Link
       href="/jobs"
-      className="flex h-full flex-col gap-5 rounded-sm border border-brand-gold/25 bg-brand-green-light/40 px-6 py-6 transition-colors hover:border-brand-gold/50"
+      className="surface-card flex h-full flex-col gap-5 rounded-sm border border-brand-gold/25 bg-brand-green-light/40 px-6 py-6 hover:border-brand-gold/50"
     >
       <div className="flex items-center justify-between">
         <span className="text-[11px] uppercase tracking-[0.18em] text-brand-ivory/55">
@@ -44,7 +44,10 @@ export default function JobsOverviewCard({
           Next up
         </p>
         {upcoming.length === 0 ? (
-          <p className="text-sm text-brand-ivory/40">Nothing scheduled yet.</p>
+          <p className="flex items-center gap-2 text-sm text-brand-ivory/40">
+            <CalendarX size={16} strokeWidth={1.25} className="shrink-0 text-brand-ivory/20" />
+            Nothing scheduled yet.
+          </p>
         ) : (
           upcoming.map((job) => (
             <div key={job.id} className="flex items-center justify-between gap-3">

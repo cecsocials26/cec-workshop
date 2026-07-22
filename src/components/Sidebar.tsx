@@ -9,7 +9,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="flex h-full w-64 shrink-0 flex-col border-r border-brand-gold/20 bg-brand-green-dark">
+    <aside className="flex h-full w-64 shrink-0 flex-col border-r border-brand-gold/20 bg-gradient-to-b from-brand-green to-brand-green-dark">
       <div className="flex flex-col items-center gap-3 border-b border-brand-gold/20 px-6 py-8">
         <div className="relative h-16 w-16 overflow-hidden rounded-full ring-1 ring-brand-gold/40">
           <Image
@@ -66,7 +66,7 @@ export default function Sidebar() {
               <li key={item.label}>
                 <Link
                   href={item.href}
-                  className={`flex items-center gap-3 rounded-sm px-3 py-2.5 transition-colors ${
+                  className={`press flex items-center gap-3 rounded-sm px-3 py-2.5 transition-colors duration-200 ease-out ${
                     isActive
                       ? "bg-brand-gold/10 text-brand-gold-soft"
                       : "text-brand-ivory/85 hover:bg-brand-gold/5 hover:text-brand-gold-soft"

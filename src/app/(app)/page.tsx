@@ -61,7 +61,7 @@ export default async function Home() {
           <h2 className="font-heading text-3xl tracking-wide text-brand-ivory">
             Overview
           </h2>
-          <p className="mt-1 text-sm text-brand-ivory/50">
+          <p className="mt-2 text-sm text-brand-ivory/50">
             A single vantage point over jobs, payments, documents and forms.
           </p>
         </div>
