@@ -6,7 +6,7 @@ import StatusBadge from "@/components/StatusBadge";
 import type { Job } from "@/lib/jobs";
 
 type CalendarJob = Pick<Job, "id" | "job_type" | "status" | "scheduled_date"> & {
-  customer: { full_name: string } | null;
+  customer?: { full_name: string } | null;
 };
 
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];

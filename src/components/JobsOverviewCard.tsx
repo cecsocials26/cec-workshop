@@ -1,14 +1,17 @@
 import Link from "next/link";
 import { ClipboardList } from "lucide-react";
 import StatusBadge from "@/components/StatusBadge";
+import Sparkline from "@/components/Sparkline";
 import { formatDate, type Job } from "@/lib/jobs";
 
 export default function JobsOverviewCard({
   activeCount,
   upcoming,
+  weeklyCounts,
 }: {
   activeCount: number;
   upcoming: Job[];
+  weeklyCounts?: number[];
 }) {
   return (
     <Link
@@ -22,12 +25,19 @@ export default function JobsOverviewCard({
         <ClipboardList size={18} strokeWidth={1.5} className="text-brand-gold-soft" />
       </div>
 
-      <p className="font-heading text-4xl text-brand-ivory">
-        {activeCount}{" "}
-        <span className="text-lg text-brand-ivory/50">
-          active job{activeCount === 1 ? "" : "s"}
-        </span>
-      </p>
+      <div className="flex items-end justify-between gap-3">
+        <p className="font-heading text-4xl text-brand-ivory">
+          {activeCount}{" "}
+          <span className="text-lg text-brand-ivory/50">
+            active job{activeCount === 1 ? "" : "s"}
+          </span>
+        </p>
+        {weeklyCounts && (
+          <div className="pb-1 text-brand-gold-soft/70">
+            <Sparkline data={weeklyCounts} />
+          </div>
+        )}
+      </div>
 
       <div className="flex flex-1 flex-col gap-3 border-t border-brand-gold/15 pt-4">
         <p className="text-[11px] uppercase tracking-[0.15em] text-brand-ivory/45">

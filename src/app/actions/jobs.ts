@@ -8,12 +8,16 @@ import type { JobStatus } from "@/lib/jobs";
 function readJobFields(formData: FormData, customerId: string) {
   const priceRaw = formData.get("price") as string;
   const scheduledDateRaw = formData.get("scheduled_date") as string;
+  const scheduledTimeRaw = formData.get("scheduled_time") as string;
+  const quoteExpiresRaw = formData.get("quote_expires_at") as string;
 
   return {
     customer_id: customerId,
     job_type: formData.get("job_type") as string,
     status: formData.get("status") as JobStatus,
     scheduled_date: scheduledDateRaw || null,
+    scheduled_time: scheduledTimeRaw || null,
+    quote_expires_at: quoteExpiresRaw || null,
     price: priceRaw ? Number(priceRaw) : null,
     notes: (formData.get("notes") as string) || null,
   };

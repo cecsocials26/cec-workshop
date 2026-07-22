@@ -141,6 +141,18 @@ export default function JobForm({
             />
           </div>
           <div className="flex flex-col gap-1.5">
+            <label className={labelClass} htmlFor="scheduled_time">
+              Scheduled time
+            </label>
+            <input
+              id="scheduled_time"
+              name="scheduled_time"
+              type="time"
+              defaultValue={job?.scheduled_time ?? ""}
+              className={fieldClass}
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
             <label className={labelClass} htmlFor="price">
               Price (£)
             </label>
@@ -151,6 +163,18 @@ export default function JobForm({
               step="0.01"
               min="0"
               defaultValue={job?.price ?? ""}
+              className={fieldClass}
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className={labelClass} htmlFor="quote_expires_at">
+              Quote expires
+            </label>
+            <input
+              id="quote_expires_at"
+              name="quote_expires_at"
+              type="date"
+              defaultValue={job?.quote_expires_at ?? ""}
               className={fieldClass}
             />
           </div>

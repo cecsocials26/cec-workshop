@@ -2,13 +2,7 @@ import type { User } from "@supabase/supabase-js";
 import { LogOut } from "lucide-react";
 import { signOut } from "@/app/actions/auth";
 import { getDisplayName, getDisplayRole } from "@/lib/team";
-
-function getGreeting(): string {
-  const hour = new Date().getHours();
-  if (hour < 12) return "Good morning";
-  if (hour < 18) return "Good afternoon";
-  return "Good evening";
-}
+import { getGreeting } from "@/lib/greeting";
 
 export default function TopBar({ user }: { user: User | null }) {
   const today = new Date().toLocaleDateString("en-GB", {

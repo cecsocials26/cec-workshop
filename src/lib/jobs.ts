@@ -14,6 +14,8 @@ export type Job = {
   job_type: string;
   status: JobStatus;
   scheduled_date: string | null;
+  scheduled_time: string | null;
+  quote_expires_at: string | null;
   price: number | null;
   notes: string | null;
   created_at: string;
@@ -40,6 +42,33 @@ export function formatPrice(price: number | null): string {
     style: "currency",
     currency: "GBP",
   }).format(price);
+}
+
+export function weeklyCounts(dates: string[], weeks = 8): number[] {
+  const now = new Date();
+  const buckets = new Array(weeks).fill(0);
+
+  for (const d of dates) {
+    const date = new Date(d);
+    const diffWeeks = Math.floor(
+      (now.getTime() - date.getTime()) / (7 * 24 * 3_600_000),
+    );
+    const bucketIndex = weeks - 1 - diffWeeks;
+    if (bucketIndex >= 0 && bucketIndex < weeks) {
+      buckets[bucketIndex] += 1;
+    }
+  }
+
+  return buckets;
+}
+
+export function formatTime(time: string | null): string {
+  if (!time) return "—";
+  const [h, m] = time.split(":");
+  const hour = Number(h);
+  const period = hour >= 12 ? "pm" : "am";
+  const displayHour = hour % 12 === 0 ? 12 : hour % 12;
+  return `${displayHour}:${m}${period}`;
 }
 
 export function formatDate(date: string | null): string {
