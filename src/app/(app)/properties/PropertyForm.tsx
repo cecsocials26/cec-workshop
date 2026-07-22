@@ -1,33 +1,29 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { JOB_STATUSES, type Job } from "@/lib/jobs";
+import { useState } from "react";
+import type { Property } from "@/lib/properties";
 import { customerLabel, type Customer } from "@/lib/customers";
-import { propertyLabel, type Property } from "@/lib/properties";
 
 const fieldClass =
   "rounded-sm border border-brand-gold/25 bg-brand-green-dark/60 px-4 py-2.5 text-sm text-brand-ivory placeholder:text-brand-ivory/30 outline-none transition-colors duration-200 ease-out focus:border-brand-gold/60";
 
 const labelClass = "text-[11px] uppercase tracking-[0.15em] text-brand-ivory/55";
 
-export default function JobForm({
+export default function PropertyForm({
   action,
-  job,
+  property,
   customers,
-  properties,
+  initialCustomerId,
   submitLabel,
 }: {
   action: (formData: FormData) => void;
-  job?: Job;
+  property?: Property;
   customers: Customer[];
-  properties: Property[];
+  initialCustomerId?: string;
   submitLabel: string;
 }) {
-  const [customerId, setCustomerId] = useState(job?.customer_id ?? "__new__");
-
-  const propertiesForCustomer = useMemo(
-    () => properties.filter((p) => p.customer_id === customerId),
-    [properties, customerId],
+  const [customerId, setCustomerId] = useState(
+    property?.customer_id ?? initialCustomerId ?? "__new__",
   );
 
   return (
@@ -72,11 +68,7 @@ export default function JobForm({
               <label className={labelClass} htmlFor="new_customer_phone">
                 Phone
               </label>
-              <input
-                id="new_customer_phone"
-                name="new_customer_phone"
-                className={fieldClass}
-              />
+              <input id="new_customer_phone" name="new_customer_phone" className={fieldClass} />
             </div>
             <div className="flex flex-col gap-1.5">
               <label className={labelClass} htmlFor="new_customer_email">
@@ -101,113 +93,71 @@ export default function JobForm({
             </div>
           </div>
         )}
-
-        {customerId !== "__new__" && (
-          <div className="flex flex-col gap-1.5">
-            <label className={labelClass} htmlFor="property_id">
-              Property
-            </label>
-            <select
-              id="property_id"
-              name="property_id"
-              defaultValue={job?.property_id ?? ""}
-              className={fieldClass}
-            >
-              <option value="">No specific property</option>
-              {propertiesForCustomer.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {propertyLabel(p)}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
       </section>
 
       <section className="flex flex-col gap-4">
-        <h3 className="font-heading text-lg text-brand-gold-soft">Job</h3>
+        <h3 className="font-heading text-lg text-brand-gold-soft">Property</h3>
+
+        <div className="flex flex-col gap-1.5">
+          <label className={labelClass} htmlFor="address">
+            Property address
+          </label>
+          <input
+            id="address"
+            name="address"
+            required
+            defaultValue={property?.address}
+            className={fieldClass}
+          />
+        </div>
+
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="flex flex-col gap-1.5">
-            <label className={labelClass} htmlFor="job_type">
-              Job type
+            <label className={labelClass} htmlFor="construction">
+              Construction / materials
             </label>
             <input
-              id="job_type"
-              name="job_type"
-              required
-              placeholder="e.g. Gutter clearing"
-              defaultValue={job?.job_type}
+              id="construction"
+              name="construction"
+              placeholder="e.g. Brick, tile roof, uPVC"
+              defaultValue={property?.construction ?? ""}
               className={fieldClass}
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className={labelClass} htmlFor="status">
-              Status
+            <label className={labelClass} htmlFor="health_score">
+              Health score
             </label>
             <select
-              id="status"
-              name="status"
-              defaultValue={job?.status ?? "quoted"}
+              id="health_score"
+              name="health_score"
+              defaultValue={property?.health_score ?? ""}
               className={fieldClass}
             >
-              {JOB_STATUSES.map((s) => (
-                <option key={s.value} value={s.value}>
-                  {s.label}
-                </option>
-              ))}
+              <option value="">Not yet assessed</option>
+              <option value="1">1 — Poor</option>
+              <option value="2">2 — Below average</option>
+              <option value="3">3 — Fair</option>
+              <option value="4">4 — Good</option>
+              <option value="5">5 — Excellent</option>
             </select>
           </div>
-          <div className="flex flex-col gap-1.5">
-            <label className={labelClass} htmlFor="scheduled_date">
-              Scheduled date
-            </label>
-            <input
-              id="scheduled_date"
-              name="scheduled_date"
-              type="date"
-              defaultValue={job?.scheduled_date ?? ""}
-              className={fieldClass}
-            />
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <label className={labelClass} htmlFor="scheduled_time">
-              Scheduled time
-            </label>
-            <input
-              id="scheduled_time"
-              name="scheduled_time"
-              type="time"
-              defaultValue={job?.scheduled_time ?? ""}
-              className={fieldClass}
-            />
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <label className={labelClass} htmlFor="price">
-              Price (£)
-            </label>
-            <input
-              id="price"
-              name="price"
-              type="number"
-              step="0.01"
-              min="0"
-              defaultValue={job?.price ?? ""}
-              className={fieldClass}
-            />
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <label className={labelClass} htmlFor="quote_expires_at">
-              Quote expires
-            </label>
-            <input
-              id="quote_expires_at"
-              name="quote_expires_at"
-              type="date"
-              defaultValue={job?.quote_expires_at ?? ""}
-              className={fieldClass}
-            />
-          </div>
         </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label className={labelClass} htmlFor="access_notes">
+            Access &amp; hazard notes
+          </label>
+          <textarea
+            id="access_notes"
+            name="access_notes"
+            rows={3}
+            placeholder="Gate codes, dogs on site, parking, working-at-height hazards, etc."
+            defaultValue={property?.access_notes ?? ""}
+            className={fieldClass}
+          />
+        </div>
+
         <div className="flex flex-col gap-1.5">
           <label className={labelClass} htmlFor="notes">
             Notes
@@ -216,7 +166,7 @@ export default function JobForm({
             id="notes"
             name="notes"
             rows={4}
-            defaultValue={job?.notes ?? ""}
+            defaultValue={property?.notes ?? ""}
             className={fieldClass}
           />
         </div>

@@ -27,7 +27,10 @@ export default async function Home() {
     { data: todosPreview },
     weather,
   ] = await Promise.all([
-    supabase.from("jobs").select("*, customer:customers(*)").returns<Job[]>(),
+    supabase
+      .from("jobs")
+      .select("*, customer:customers(*), property:properties(*)")
+      .returns<Job[]>(),
     supabase
       .from("payments")
       .select("*, job:jobs(*, customer:customers(*))")

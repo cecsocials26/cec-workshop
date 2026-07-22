@@ -1,7 +1,9 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { updateCustomer, deleteCustomer } from "@/app/actions/customers";
 import type { Customer } from "@/lib/customers";
+import { healthScoreLabel, type Property } from "@/lib/properties";
 import CustomerForm from "../CustomerForm";
 
 export default async function EditCustomerPage({
@@ -11,11 +13,15 @@ export default async function EditCustomerPage({
 }) {
   const { id } = await params;
   const supabase = await createClient();
-  const { data: customer } = await supabase
-    .from("customers")
-    .select("*")
-    .eq("id", id)
-    .maybeSingle<Customer>();
+  const [{ data: customer }, { data: properties }] = await Promise.all([
+    supabase.from("customers").select("*").eq("id", id).maybeSingle<Customer>(),
+    supabase
+      .from("properties")
+      .select("*")
+      .eq("customer_id", id)
+      .order("created_at", { ascending: false })
+      .returns<Property[]>(),
+  ]);
 
   if (!customer) notFound();
 
@@ -46,6 +52,38 @@ export default async function EditCustomerPage({
           customer={customer}
           submitLabel="Save changes"
         />
+      </div>
+
+      <div className="flex max-w-2xl flex-col gap-4">
+        <div className="flex items-center justify-between">
+          <h3 className="font-heading text-lg text-brand-gold-soft">Properties</h3>
+          <Link
+            href={`/properties/new?customer=${customer.id}`}
+            className="press text-xs uppercase tracking-wider text-brand-gold-soft transition-colors duration-200 ease-out hover:text-brand-gold"
+          >
+            + Add property
+          </Link>
+        </div>
+
+        {!properties || properties.length === 0 ? (
+          <p className="text-sm text-brand-ivory/40">No properties on file yet.</p>
+        ) : (
+          <ul className="surface-static flex flex-col divide-y divide-brand-gold/10 rounded-sm border border-brand-gold/20">
+            {properties.map((property) => (
+              <li key={property.id}>
+                <Link
+                  href={`/properties/${property.id}`}
+                  className="flex items-center justify-between gap-3 px-4 py-3 transition-colors duration-200 ease-out hover:bg-brand-gold/5"
+                >
+                  <span className="text-sm text-brand-ivory/90">{property.address}</span>
+                  <span className="shrink-0 text-xs text-brand-ivory/50">
+                    {healthScoreLabel(property.health_score)}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );

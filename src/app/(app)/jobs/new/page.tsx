@@ -1,15 +1,19 @@
 import { createClient } from "@/lib/supabase/server";
 import { createJob } from "@/app/actions/jobs";
 import type { Customer } from "@/lib/customers";
+import type { Property } from "@/lib/properties";
 import JobForm from "../JobForm";
 
 export default async function NewJobPage() {
   const supabase = await createClient();
-  const { data: customers } = await supabase
-    .from("customers")
-    .select("*")
-    .order("full_name", { ascending: true })
-    .returns<Customer[]>();
+  const [{ data: customers }, { data: properties }] = await Promise.all([
+    supabase
+      .from("customers")
+      .select("*")
+      .order("full_name", { ascending: true })
+      .returns<Customer[]>(),
+    supabase.from("properties").select("*").returns<Property[]>(),
+  ]);
 
   return (
     <div className="flex flex-col gap-8">
@@ -26,6 +30,7 @@ export default async function NewJobPage() {
         <JobForm
           action={createJob}
           customers={customers ?? []}
+          properties={properties ?? []}
           submitLabel="Create job"
         />
       </div>

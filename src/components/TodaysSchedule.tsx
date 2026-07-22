@@ -32,7 +32,7 @@ export default function TodaysSchedule({ jobs }: { jobs: Job[] }) {
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm text-brand-ivory/90">{job.job_type}</p>
                   <p className="truncate text-xs text-brand-ivory/50">
-                    {job.customer?.address ?? job.customer?.full_name ?? "—"}
+                    {job.property?.address ?? job.customer?.address ?? job.customer?.full_name ?? "—"}
                   </p>
                 </div>
               </Link>

@@ -25,7 +25,7 @@ export const navItems: NavItem[] = [
   { label: "Todos", href: "/todos", icon: ListChecks, enabled: true },
   { label: "Jobs", href: "/jobs", icon: Hammer, enabled: true },
   { label: "Customers / CRM", href: "/crm", icon: Users, enabled: true },
-  { label: "Properties", href: "/properties", icon: Home, enabled: false },
+  { label: "Properties", href: "/properties", icon: Home, enabled: true },
   { label: "Payments", href: "/payments", icon: Banknote, enabled: true },
   { label: "Documents", href: "/documents", icon: FileText, enabled: false },
   { label: "Forms", href: "/forms", icon: FileSignature, enabled: false },

@@ -1,12 +1,11 @@
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { updateJob, deleteJob } from "@/app/actions/jobs";
-import type { Job } from "@/lib/jobs";
-import type { Customer } from "@/lib/customers";
+import { updateProperty, deleteProperty } from "@/app/actions/properties";
 import type { Property } from "@/lib/properties";
-import JobForm from "../JobForm";
+import type { Customer } from "@/lib/customers";
+import PropertyForm from "../PropertyForm";
 
-export default async function EditJobPage({
+export default async function EditPropertyPage({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -14,50 +13,50 @@ export default async function EditJobPage({
   const { id } = await params;
   const supabase = await createClient();
 
-  const [{ data: job }, { data: customers }, { data: properties }] = await Promise.all([
+  const [{ data: property }, { data: customers }] = await Promise.all([
     supabase
-      .from("jobs")
-      .select("*, customer:customers(*), property:properties(*)")
+      .from("properties")
+      .select("*, customer:customers(*)")
       .eq("id", id)
-      .maybeSingle<Job>(),
+      .maybeSingle<Property>(),
     supabase
       .from("customers")
       .select("*")
       .order("full_name", { ascending: true })
       .returns<Customer[]>(),
-    supabase.from("properties").select("*").returns<Property[]>(),
   ]);
 
-  if (!job) notFound();
+  if (!property) notFound();
 
-  const updateJobWithId = updateJob.bind(null, job.id);
-  const deleteJobWithId = deleteJob.bind(null, job.id);
+  const updatePropertyWithId = updateProperty.bind(null, property.id);
+  const deletePropertyWithId = deleteProperty.bind(null, property.id);
 
   return (
     <div className="flex flex-col gap-8">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="font-heading text-3xl tracking-wide text-brand-ivory">
-            {job.customer?.full_name ?? "—"}
+            {property.address}
           </h2>
-          <p className="mt-2 text-sm text-brand-ivory/50">{job.job_type}</p>
+          <p className="mt-2 text-sm text-brand-ivory/50">
+            {property.customer?.full_name ?? "—"}
+          </p>
         </div>
-        <form action={deleteJobWithId}>
+        <form action={deletePropertyWithId}>
           <button
             type="submit"
             className="press rounded-sm border border-brand-gold/25 px-4 py-2 text-xs uppercase tracking-wider text-brand-ivory/50 transition-all duration-200 ease-out hover:border-brand-gold/50 hover:text-brand-gold-soft"
           >
-            Delete job
+            Delete property
           </button>
         </form>
       </div>
 
       <div className="surface-static max-w-2xl rounded-sm border border-brand-gold/20 bg-brand-green-light/20 px-6 py-6">
-        <JobForm
-          action={updateJobWithId}
-          job={job}
+        <PropertyForm
+          action={updatePropertyWithId}
+          property={property}
           customers={customers ?? []}
-          properties={properties ?? []}
           submitLabel="Save changes"
         />
       </div>
