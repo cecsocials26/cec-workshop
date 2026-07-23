@@ -4,15 +4,21 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { resolveOrCreateCustomerId } from "@/lib/customers-server";
+import { ALL_HEALTH_FACTORS } from "@/lib/properties";
 
 function readPropertyFields(formData: FormData, customerId: string) {
-  const healthScoreRaw = formData.get("health_score") as string;
+  const healthFields = Object.fromEntries(
+    ALL_HEALTH_FACTORS.map((factor) => [
+      factor.key,
+      (formData.get(factor.key) as string) || null,
+    ]),
+  );
 
   return {
     customer_id: customerId,
     address: formData.get("address") as string,
     construction: (formData.get("construction") as string) || null,
-    health_score: healthScoreRaw ? Number(healthScoreRaw) : null,
+    ...healthFields,
     access_notes: (formData.get("access_notes") as string) || null,
     notes: (formData.get("notes") as string) || null,
   };

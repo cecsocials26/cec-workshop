@@ -5,6 +5,7 @@ import type { Property } from "@/lib/properties";
 import type { Customer } from "@/lib/customers";
 import type { ServiceCategory } from "@/lib/jobs";
 import ServiceStamps from "@/components/ServiceStamps";
+import PropertyHealthDial from "@/components/PropertyHealthDial";
 import PropertyForm from "../PropertyForm";
 
 const COMPLETED_STATUSES = ["completed", "invoiced", "paid"];
@@ -66,6 +67,13 @@ export default async function EditPropertyPage({
             Delete property
           </button>
         </form>
+      </div>
+
+      <div className="surface-static max-w-3xl rounded-sm border border-brand-gold/20 bg-brand-green-light/20 px-6 py-6">
+        <p className="mb-5 text-[11px] uppercase tracking-[0.18em] text-brand-ivory/55">
+          Property Health
+        </p>
+        <PropertyHealthDial property={property} />
       </div>
 
       <div className="surface-static max-w-3xl rounded-sm border border-brand-gold/20 bg-brand-green-light/20 px-6 py-6">

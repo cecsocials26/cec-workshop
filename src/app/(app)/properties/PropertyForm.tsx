@@ -1,7 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import type { Property } from "@/lib/properties";
+import {
+  ALL_HEALTH_FACTORS,
+  HEALTH_STATES,
+  type Property,
+} from "@/lib/properties";
 import { customerLabel, type Customer } from "@/lib/customers";
 
 const fieldClass =
@@ -111,39 +115,52 @@ export default function PropertyForm({
           />
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="flex flex-col gap-1.5">
-            <label className={labelClass} htmlFor="construction">
-              Construction / materials
-            </label>
-            <input
-              id="construction"
-              name="construction"
-              placeholder="e.g. Brick, tile roof, uPVC"
-              defaultValue={property?.construction ?? ""}
-              className={fieldClass}
-            />
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <label className={labelClass} htmlFor="health_score">
-              Health score
-            </label>
-            <select
-              id="health_score"
-              name="health_score"
-              defaultValue={property?.health_score ?? ""}
-              className={fieldClass}
-            >
-              <option value="">Not yet assessed</option>
-              <option value="1">1 — Poor</option>
-              <option value="2">2 — Below average</option>
-              <option value="3">3 — Fair</option>
-              <option value="4">4 — Good</option>
-              <option value="5">5 — Excellent</option>
-            </select>
-          </div>
+        <div className="flex flex-col gap-1.5">
+          <label className={labelClass} htmlFor="construction">
+            Construction / materials
+          </label>
+          <input
+            id="construction"
+            name="construction"
+            placeholder="e.g. Brick, tile roof, uPVC"
+            defaultValue={property?.construction ?? ""}
+            className={fieldClass}
+          />
         </div>
 
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h3 className="font-heading text-lg text-brand-gold-soft">Health Assessment</h3>
+        <p className="text-xs text-brand-ivory/45">
+          Set during a visit — leave as &quot;Not yet assessed&quot; for anything you haven&apos;t
+          checked. The dial shows the worst of whatever&apos;s been assessed.
+        </p>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {ALL_HEALTH_FACTORS.map((factor) => (
+            <div key={factor.key} className="flex flex-col gap-1.5">
+              <label className={labelClass} htmlFor={factor.key}>
+                {factor.label}
+              </label>
+              <select
+                id={factor.key}
+                name={factor.key}
+                defaultValue={(property?.[factor.key] as string | null) ?? ""}
+                className={fieldClass}
+              >
+                <option value="">Not yet assessed</option>
+                {HEALTH_STATES.map((state) => (
+                  <option key={state.value} value={state.value}>
+                    {state.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
           <label className={labelClass} htmlFor="access_notes">
             Access &amp; hazard notes

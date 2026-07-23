@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { updateCustomer, deleteCustomer } from "@/app/actions/customers";
 import type { Customer } from "@/lib/customers";
-import { healthScoreLabel, type Property } from "@/lib/properties";
+import { computeOverallHealth, healthStateLabel, type Property } from "@/lib/properties";
 import CustomerForm from "../CustomerForm";
 
 export default async function EditCustomerPage({
@@ -77,7 +77,7 @@ export default async function EditCustomerPage({
                 >
                   <span className="text-sm text-brand-ivory/90">{property.address}</span>
                   <span className="shrink-0 text-xs text-brand-ivory/50">
-                    {healthScoreLabel(property.health_score)}
+                    {healthStateLabel(computeOverallHealth(property))}
                   </span>
                 </Link>
               </li>

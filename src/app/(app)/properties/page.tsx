@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Home } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { healthScoreLabel, type Property } from "@/lib/properties";
+import { computeOverallHealth, healthStateLabel, type Property } from "@/lib/properties";
 
 export default async function PropertiesPage() {
   const supabase = await createClient();
@@ -54,7 +54,7 @@ export default async function PropertiesPage() {
                 <th className="px-4 py-3 font-normal">Customer</th>
                 <th className="px-4 py-3 font-normal">Address</th>
                 <th className="px-4 py-3 font-normal">Construction</th>
-                <th className="px-4 py-3 font-normal">Health score</th>
+                <th className="px-4 py-3 font-normal">Health</th>
               </tr>
             </thead>
             <tbody>
@@ -76,7 +76,7 @@ export default async function PropertiesPage() {
                     {property.construction ?? "—"}
                   </td>
                   <td className="px-4 py-3 text-brand-ivory/70">
-                    {healthScoreLabel(property.health_score)}
+                    {healthStateLabel(computeOverallHealth(property))}
                   </td>
                 </tr>
               ))}
