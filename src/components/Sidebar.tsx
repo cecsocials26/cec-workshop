@@ -46,12 +46,19 @@ export default function Sidebar() {
                 <li key={item.label}>
                   <div
                     className="flex cursor-not-allowed items-center justify-between rounded-sm px-3 py-2.5 text-brand-ivory/35"
-                    title="Coming soon"
+                    title={item.room ? `${item.room} — coming soon` : "Coming soon"}
                   >
                     <span className="flex items-center gap-3">
                       <Icon size={17} strokeWidth={1.5} />
-                      <span className="text-[13.5px] tracking-wide">
-                        {item.label}
+                      <span className="flex flex-col">
+                        <span className="text-[13.5px] tracking-wide">
+                          {item.label}
+                        </span>
+                        {item.room && (
+                          <span className="text-[10px] italic text-brand-ivory/25">
+                            {item.room}
+                          </span>
+                        )}
                       </span>
                     </span>
                     <span className="rounded-full border border-brand-ivory/20 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-brand-ivory/40">
@@ -66,6 +73,7 @@ export default function Sidebar() {
               <li key={item.label}>
                 <Link
                   href={item.href}
+                  title={item.room}
                   className={`press flex items-center gap-3 rounded-sm px-3 py-2.5 transition-colors duration-200 ease-out ${
                     isActive
                       ? "bg-brand-gold/10 text-brand-gold-soft"
@@ -73,8 +81,15 @@ export default function Sidebar() {
                   }`}
                 >
                   <Icon size={17} strokeWidth={1.5} />
-                  <span className="text-[13.5px] tracking-wide">
-                    {item.label}
+                  <span className="flex flex-col">
+                    <span className="text-[13.5px] tracking-wide">
+                      {item.label}
+                    </span>
+                    {item.room && (
+                      <span className="text-[10px] italic text-brand-gold-soft/50">
+                        {item.room}
+                      </span>
+                    )}
                   </span>
                 </Link>
               </li>

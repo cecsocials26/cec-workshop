@@ -18,7 +18,10 @@ export default function FoundationPage() {
             />
           </div>
           <div>
-            <p className="text-[11px] uppercase tracking-[0.2em] text-brand-gold-soft/80">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-brand-ivory/35">
+              Foundation Office
+            </p>
+            <p className="mt-1 text-[11px] uppercase tracking-[0.2em] text-brand-gold-soft/80">
               The Olive Branch Foundation
             </p>
             <h2 className="mt-2 font-heading text-3xl tracking-wide text-brand-ivory">

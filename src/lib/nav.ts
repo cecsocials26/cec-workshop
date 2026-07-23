@@ -19,19 +19,50 @@ export type NavItem = {
   href: string;
   icon: LucideIcon;
   enabled: boolean;
+  room?: string;
 };
 
 export const navItems: NavItem[] = [
-  { label: "Overview", href: "/", icon: LayoutDashboard, enabled: true },
+  { label: "Overview", href: "/", icon: LayoutDashboard, enabled: true, room: "Mission Control" },
   { label: "Todos", href: "/todos", icon: ListChecks, enabled: true },
-  { label: "Jobs", href: "/jobs", icon: Hammer, enabled: true },
-  { label: "Customers / CRM", href: "/crm", icon: Users, enabled: true },
-  { label: "Properties", href: "/properties", icon: Home, enabled: true },
+  { label: "Jobs", href: "/jobs", icon: Hammer, enabled: true, room: "Operations Room" },
+  {
+    label: "Customers / CRM",
+    href: "/crm",
+    icon: Users,
+    enabled: true,
+    room: "Relationship Office",
+  },
+  {
+    label: "Properties",
+    href: "/properties",
+    icon: Home,
+    enabled: true,
+    room: "Archive Room",
+  },
   { label: "Payments", href: "/payments", icon: Banknote, enabled: true },
-  { label: "Collections", href: "/collections", icon: Layers, enabled: true },
-  { label: "Documents", href: "/documents", icon: FileText, enabled: false },
+  {
+    label: "Collections",
+    href: "/collections",
+    icon: Layers,
+    enabled: true,
+    room: "The Library",
+  },
+  {
+    label: "Documents",
+    href: "/documents",
+    icon: FileText,
+    enabled: false,
+    room: "Records Office",
+  },
   { label: "Forms", href: "/forms", icon: FileSignature, enabled: false },
   { label: "Marketing", href: "/marketing", icon: Megaphone, enabled: false },
-  { label: "Olive Branch Foundation", href: "/foundation", icon: Leaf, enabled: true },
+  {
+    label: "Olive Branch Foundation",
+    href: "/foundation",
+    icon: Leaf,
+    enabled: true,
+    room: "Foundation Office",
+  },
   { label: "Admin", href: "/admin", icon: Settings, enabled: false },
 ];

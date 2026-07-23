@@ -87,7 +87,10 @@ export default async function Home() {
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h2 className="font-heading text-3xl tracking-wide text-brand-ivory">
+          <p className="text-[11px] uppercase tracking-[0.2em] text-brand-gold-soft/70">
+            Mission Control
+          </p>
+          <h2 className="mt-1 font-heading text-3xl tracking-wide text-brand-ivory">
             Overview
           </h2>
           <p className="mt-2 text-sm text-brand-ivory/50">
