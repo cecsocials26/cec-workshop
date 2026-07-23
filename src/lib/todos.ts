@@ -16,7 +16,7 @@ export const TODO_CATEGORIES = [
   "Insurance",
   "Brand & Marketing",
   "Photography",
-  "One Kind Day / Foundation",
+  "One Kind Day / Olive Branch Foundation",
   "Website",
   "Pricing",
   "Equipment",
